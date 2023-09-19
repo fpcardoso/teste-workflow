@@ -1,0 +1,38 @@
+name: MySQL Workflow
+
+on:
+  push:
+    branches:
+      - main  # Configure aqui a branch em que deseja acionar o workflow
+
+jobs:
+  start-mysql:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up MySQL 8
+      uses: mysql/setup-mysql@v2
+      with:
+        mysql-version: '8.0'
+        mysql-options: "--port=3306 --character-set-server=utf8 --collation-server=utf8_general_ci"
+      env:
+        MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        MYSQL_USER: dafws
+        MYSQL_PASSWORD: 7rVQW48ph2
+        MYSQL_DATABASE: daf-ws
+        TZ: America/Sao_Paulo
+
+  test-mysql-connection:
+    needs: start-mysql
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Test MySQL Connection
+      run: |
+        mysql -h localhost -P 3306 -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "SHOW DATABASES;"
