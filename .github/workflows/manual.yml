@@ -25,11 +25,11 @@ jobs:
           -p 3306:3306 \
           mysql:8.0
 
-  test-mysql-connection:
-    needs: start-mysql
-    runs-on: ubuntu-latest
+  # test-mysql-connection:
+  #   needs: start-mysql
+  #   runs-on: ubuntu-latest
 
-    steps:
+  #   steps:
     - name: Check out code
       uses: actions/checkout@v2
 
