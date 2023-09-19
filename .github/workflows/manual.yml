@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up MySQL 8
-      uses: mysql/setup-mysql@v2
+      uses: mysql/setup-mysql@v3
       with:
         mysql-version: '8.0'
         mysql-options: "--port=3306 --character-set-server=utf8 --collation-server=utf8_general_ci"
@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Test MySQL Connection
       run: |
