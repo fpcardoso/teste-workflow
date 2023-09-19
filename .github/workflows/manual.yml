@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up MySQL 8
       uses: mysql/setup-mysql@v3
