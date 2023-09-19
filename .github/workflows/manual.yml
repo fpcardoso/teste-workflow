@@ -11,19 +11,19 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Set up MySQL 8
-      uses: mysql/setup-mysql@v3
-      with:
-        mysql-version: '8.0'
-        mysql-options: "--port=3306 --character-set-server=utf8 --collation-server=utf8_general_ci"
-      env:
-        MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-        MYSQL_USER: dafws
-        MYSQL_PASSWORD: 7rVQW48ph2
-        MYSQL_DATABASE: daf-ws
-        TZ: America/Sao_Paulo
+    - name: Start MySQL Container
+      run: |
+        docker run -d \
+          --name mysql-server \
+          -e MYSQL_ROOT_PASSWORD=db-sef-password \
+          -e MYSQL_USER=dafws \
+          -e MYSQL_PASSWORD=7rVQW48ph2 \
+          -e MYSQL_DATABASE=daf-ws \
+          -e TZ=America/Sao_Paulo \
+          -p 3306:3306 \
+          mysql:8.0
 
   test-mysql-connection:
     needs: start-mysql
@@ -31,8 +31,10 @@ jobs:
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Test MySQL Connection
       run: |
-        mysql -h localhost -P 3306 -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "SHOW DATABASES;"
+        # Aguarde alguns segundos para que o servidor MySQL seja iniciado completamente
+        sleep 10
+        mysql -h 127.0.0.1 -P 3306 -u dafws -p7rVQW48ph2 -e "SHOW DATABASES;"
